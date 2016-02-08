@@ -1,0 +1,40 @@
+---
+Zach Bjur
+HW3
+---
+
+```{r}
+treemod <- subset(trees, species== c("Abies fraseri", "Acer rubrum"))
+myvars <- ("cover")
+treemod1 <- treemod[myvars]
+treemod3 <- subset(trees, species== "Abies fraseri")
+treemod4 <- treemod3[myvars]
+treemod5 <- subset(trees, species== "Acer rubrum")
+treemod6 <- treemod5[myvars]
+#treemod1 contains both species and the cover variable, treemod4 is Abies fraseri & cover, treemod6 is Acer rubrum & cover
+```
+
+```{r}
+library(car)
+Anova(treemod1, type = 3)
+```
+
+```{r}
+acer_glm <- glm(cover ~ . , data= treemod6, family = 'poisson')
+pseudo_r2 = function(glm_mod) {
+    1 -  glm_mod$deviance / glm_mod$null.deviance
+ }
+acer_glm
+```
+
+```{r}
+abies_glm <- glm(cover ~ . , data= treemod4, family =poisson)
+ pseudo_r2 = function(glm_mod) {
+     1 -  glm_mod$deviance / glm_mod$null.deviance
+ }
+abies_glm
+```
+
+```{r}
+anova(treemod6, acer_glm)
+```
